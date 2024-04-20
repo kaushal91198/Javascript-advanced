@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersection Observer API</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+
+    <div id="yellow" class="ad">
+        I AM AN AD!
+    </div>
+    <div id="blue" class="ad">
+        I AM AN AD!
+    </div>
+
+    <script src="app.js"></script>
+</body>
+<style>
+    .ad {
+        height: 200px;
+        width: 200px;
+        border: 2px solid black;
+        background-color: goldenrod;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: 1500px;
+    }
+
+    #blue {
+        top: 2000px;
+        background-color: blue;
+    }
+
+    body {
+        height: 4000px;
+    }
+</style>
+<script>
+    //provides a way to asynchronously observe changes in the intersection of a target element with its parent or the viewport
+    //eg
+    //i have got a page with a lot of empty space, but imagine it's web page and i've got and add on here
+    //I wanna keep track of when this ad is actually being shown to a user.
+    //how long while a user is on this page may be ten minutes
+    //how long they see this ad
+    // the old way of doing this would be listen for scroll on the entire browser and every single time user scrolled, we would check to see is this box showing or is add this showing
+
+    //first thing we do is set up an observer a new intersection observer which expects a callabck
+    //callback will run whenever our target element is observed intersecting with the viewport
+    let adViewTimes = []
+    let adVisibleStartTime
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            // console.log(entry, 'entry')
+            // console.log(entry.intersectionRatio)
+
+            //if we have multiple entires then 
+            //we can find the entry 
+
+            const { id } = entry.target
+            console.log(id, 'idi')
+
+
+            if (entry.isIntersecting) {
+                // console.log("add is visible")/
+                adVisibleStartTime = Date.now()
+            }
+            else if (adVisibleStartTime) {
+                let adViewTime = Date.now() - adVisibleStartTime
+                adViewTimes.push(adViewTime)
+                console.log(`add was viewed for ${adViewTime} ms`)
+                adVisibleStartTime = undefined
+            }
+        })
+    }, { threshold: 1 })
+    // }, { threshold: [0, 0.25, 0.5, 0.75, 1] })
+    // this add is visible at five point 0 0.25 0.5 0.75 and 1
+    //second argument is thresold (percentage)
+    //thresold allows us to specify how much of this element should be visible before this callback is fired
+    //at 1 thresold says the entire element has to be visible
+
+    const ads = document.querySelectorAll('.ad')
+    ads.forEach(ad =>
+        observer.observe(ad)
+    )
+
+
+</script>
+
+
+
+</html>

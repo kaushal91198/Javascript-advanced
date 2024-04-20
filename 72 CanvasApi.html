@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    canvas {
+        border: 2px solid red;
+    }
+</style>
+
+<body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+
+</body>
+<script>
+    //Enables drawing graphics via JS and the HTML <canvas> element
+    //The canvas api is basically just a performant means of drawing graphics and animations directly on a web page through your scripting, rather than, you know, making divs that are different shapes and colors and animating those.
+    const canvas = document.getElementById('canvas')
+    //there are different options here '2d' and '3d'
+    //it gives whole bunch of methods liek fill rect, which is how can draw a rectange
+    const ctx = canvas.getContext('2d')
+    // ctx.fillStyle = "rgb(255,0,0)"
+    // // the first value is the x axis coordinate of the rectange starting point and next value is the y axis starting point then we have width and height
+    // ctx.fillRect(0, 0, 40, 80)
+    // //another rectangle
+    // ctx.fillStyle = "rgb(0,255,0,0.5)"
+    // ctx.fillRect(100, 50, 200, 80)
+
+
+    ctx.fillRect(50, 50, 200, 200)
+    //this method will erase whaterver it finds on the area of the canvas where we draw it
+    ctx.strokeStyle = "purple"
+    stx.lineWidth = 4
+    ctx.clearRect(50, 50, 100, 100)
+    //this will draw the outline of the rectangle takes the same argument
+    ctx.strokeRect(50, 50, 100, 100)
+
+</script>
+
+</html>

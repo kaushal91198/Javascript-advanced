@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debouncer</title>
+    <input id="search" placeholder="search" />
+    <input id="search fancy" placeholder="search fancy" />
+
+</head>
+
+<body>
+
+</body>
+<script>
+    //Debouncing is a really common concept that basically involves making sure a function is not called too frequently
+    //Essentially adding a pause before some function is run before you execute some code
+
+    let debounceTimeout
+    document.getElementById('search').addEventListener('input', callSearchApi)
+    function callSearchApi() {
+        // console.log('search the api!')
+        clearTimeout(debounceTimeout)
+        debounceTimeout = setTimeout(() => {
+            console.log("Making the API request!");
+        }, 100);
+    }
+
+
+
+    const callSearchFancyApi = debounce((...arg) => { console.log(arg, "Making the fancy API request!") }, 100)
+    document.getElementById('search fancy').addEventListener('input', (e) => callSearchFancyApi(e.target.value))
+
+    //fancy debounce function
+    function debounce(func, delay) {
+        let debounceTimeout
+        return (...args) => {
+            if (debounceTimeout) {
+                clearTimeout(debounceTimeout)
+            }
+            debounceTimeout = setTimeout(() => {
+                func(...args)
+            }, delay);
+        }
+    }
+</script>
+
+</html>

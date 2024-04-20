@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Notifications</title>
+</head>
+
+<body>
+    <h1>Notifications Demo</h1>
+    <button id="btn">Click me for notification</button>
+
+</body>
+<script>
+    //Enable web pages to display notifications to users
+    async function showNotification() {
+
+        const permission = await Notification.requestPermission()
+        if (permission === 'granted') {
+            const notification = new Notification('My first notification', {
+                body: "This is the body of my first notification so I m excited",
+                icon: "https://cdn.iconscout.com/icon/premium/png-256-thumb/url-3149974-2623127.png?f=webp&w=256"
+            })
+            notification.addEventListener("click", () => {
+                console.log("click event triggerted")
+                window.focus()
+                notification.close()
+            })
+            notification.addEventListener("close", () => {
+                console.log("close event triggerted")
+            })
+        }
+
+    }
+
+    document.getElementById('btn').addEventListener("click", showNotification)
+
+</script>
+
+</html>

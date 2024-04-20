@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    console.log(window.origin) // http://127.0.0.1:5500
+    var origin = "new origfjngjk"
+    console.log(window.origin) //new origfjngjk
+    
+    console.log(window.outerHeight) //1053  
+    let outerHeight = 0
+    //it won't changer
+    console.log(window.outerHeight) //1053
+
+    
+
+    let check = 0
+    console.log(check ,'check outer')
+
+    function outer(){
+        let check  = 5
+        console.log(check ,' check function')
+
+        if(true){
+            let check = 10
+        console.log(check ,' inner function')
+        }
+    }
+
+    outer()
+
+
+    
+
+    
+</script>
+</html>

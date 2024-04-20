@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>42 Web audio Api</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <button id="playBtn">Play Tone</button>
+        <button id="stopBtn">Stop Tone</button>
+        <input type="range" id="freqSlider" min="100" max="2000" value="440">
+        <span id="freqLabel">Frequency: 440Hz</span>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+    }
+
+    .container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+        margin-right: 10px;
+    }
+
+    input[type="range"] {
+        width: 60%;
+        margin-right: 10px;
+    }
+</style>
+<script>
+    //Allows foe the processing and synthesizing of audio in web applications
+    //it allows us to handle and manipulate audio in web applications so we can do things ranging from controlling audio and playing audio also synthesizing audio from scratch and combining waves and creating oscillators
+    const audioContext = new AudioContext()
+    const oscillator = audioContext.createOscillator()
+    oscillator.type = 'square'
+
+    oscillator.frequency.value = 200
+
+    oscillator.connect(audioContext.destination)
+    // oscillator.start()
+
+
+    const context = new AudioContext()
+    const slider = document.getElementById('freqSlider')
+    const plyBtn = document.getElementById('playBtn')
+    const stopBtn = document.getElementById('stopBtn')
+
+
+
+    let oscillator2 = null
+    plyBtn.addEventListener('click', () => {
+        oscillator2 = context.createOscillator()
+        oscillator2.type = 'sawtooth'
+        oscillator2.frequency.value = slider.value
+        oscillator2.connect(context.destination)
+        oscillator2.start()
+    })
+    slider.addEventListener('input', e => {
+        const frequency = e.target.value
+        if (oscillator2) {
+            oscillator2.frequency.value = frequency
+        }
+        document.getElementById('freqLabel').innerText = frequency
+    })
+
+    stopBtn.addEventListener('click', () => {
+        if (oscillator2) {
+            oscillator2.stop()
+            oscillator2 = null
+        }
+    })
+
+</script>
+
+</html>

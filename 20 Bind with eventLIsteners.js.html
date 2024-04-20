@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Bind with event listener</title>
+</head>
+<body>
+    
+    <button id="click">Click me</button>
+</body>
+<script>
+//When you don't directly call functions and instead js calls them, a keyword this is created for you
+// Event listeners, Timers, Callback functions (map,filter, etc)
+// in this situatipons js will decide the what keyword this is
+// so it might be the button it might be the window
+
+   const obj = {
+    firstName: "Kaushal",
+    lastName: "Panchal",
+    fullName: function () {
+        console.log(this,'ss')
+        console.log(`${this.firstName} ${this.lastName}`)
+    },
+    }; 
+    const bindObj = {
+  firstName: "Kaushal",
+  lastName: "Panchal",
+};
+    const btn = document.querySelector('#click')
+    btn.addEventListener("click",obj.fullName)
+    //here function is called on button
+    //but I can change it logic using bind
+    btn.addEventListener("click",obj.fullName.bind(bindObj))
+
+    //here we can't use the call method because it is immediately runs the function
+    //here we wanna run the function on click 
+
+</script>
+</html>

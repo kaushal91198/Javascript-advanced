@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Throttling</title>
+    <style>
+        .item {
+            padding: 20px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content"></div>
+
+</body>
+<script>
+    //Throttling is a technique used to make sure a function is called more one time within some duration
+    function getRandomColor() {
+        const palette = ['#2fb178', '#5a1aba', '#f8c362', '#2c4cb7', '#fb13ef', '#821fa5', '#681ae7', '#76e1a4', '#c6c8fb', '#294a94']
+        return palette[Math.floor(Math.random() * palette.length)]
+    }
+
+    const content = document.getElementById('content')
+
+    function loadMoreItems() {
+        const scrollDistanceToBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight
+        if (scrollDistanceToBottom < 200) {
+            console.log("Loading Data from api")
+            for (let i = 0; i < 10; i++) {
+                const item = document.createElement('div')
+                item.classList.add('item')
+                item.textContent = "Item" + (content.children.length + 1)
+                item.style.backgroundColor = getRandomColor()
+                content.appendChild(item)
+            }
+        }
+    }
+    const throttledItems = throttle(loadMoreItems, 300)
+    window.addEventListener('scroll', () => {
+        throttledItems()
+    })
+    function throttle(callBack, delay = 500) {
+        let isThrottled = false
+        let savedArgs = null
+        const executeCallback = () => {
+            //if it is, that means no additional function calls have been made during our delay period, so we can safely set is throtlled back to false
+            if (savedArgs === null) {
+                isThrottled = false
+            }
+            // but if it is not null, it means we've received additional functional calls during the delay so at that point we will execute our callback with the saved argument then we saved argument and set another timeout to execute our callback again after some dealy. so it's recursively calling execute callback again
+            else {
+                callBack(...savedArgs)
+                let savedArgs = null
+                setTimeout(executeCallback, delay)
+            }
+        }
+        return (...args) => {
+            // and this is what gets called every time our throttled function is called. so every time throttle load items is called.
+            //if we are throttled (throttle is true) we will update our saved arguments that we received here and then return right
+            if (isThrottled) {
+                savedArgs = args
+                return
+            }
+            callBack(...args)
+            isThrottled = true
+            setTimeout(executeCallback, delay)
+        }
+    }
+    loadMoreItems()
+
+
+    //throttling is just idea of making sure some function runs at most once within a given period of time, so that it won't run five times within a second, or 20 time within half a second.
+    // we can throttle it and deliberately slow it down, so it only runs once every 500 miliseconds at most
+</script>
+
+</html>

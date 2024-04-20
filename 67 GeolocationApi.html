@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <button id="getLocation">Get Location</button>
+        <div id="locationDisplay">
+            Your location will appear here.
+        </div>
+    </div>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+    }
+
+    .container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    button {
+        margin-bottom: 20px;
+    }
+</style>
+
+<script>
+    //access the user geolocation 
+    document.getElementById('getLocation').addEventListener('click', () => {
+        if (navigator.geolocation) {
+            console.log("YaY")
+            //first argument is success callback and second callback is error callback
+            navigator.geolocation.getCurrentPosition(function (position) {
+                console.log(position)
+                const { latitude, longitude } = position.coords
+                document.getElementById('locationDisplay').innerText = `Latitude ${latitude} Longitude ${longitude}`
+            }, function (err) {
+                console.log(err)
+            })
+        }
+    })
+</script>
+
+</html>

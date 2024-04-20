@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorageWithComplexObject</title>
+</head>
+
+<body>
+    <button id="toggleMode">Enable Dark Mode</button>
+    <h1>Local Storage Demo</h1>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam praesentium inventore error ut cupiditate sed
+        itaque perspiciatis, explicabo dolore quo! Iure sequi dolor sed ullam eius earum architecto, error
+        exercitationem.
+        Autem natus doloribus ut ab ducimus repellat nulla cum quae nemo eius magnam unde expedita tempora perspiciatis
+        iure voluptas laudantium eveniet officia, cupiditate alias, aliquid veniam ipsam adipisci minima. Ut?
+        Voluptate maxime id facere quo illo expedita aliquid, sed error consequuntur? Impedit, in sapiente!
+        Exercitationem nostrum, pariatur, non facilis natus nesciunt libero officia cupiditate dolores a odit cum autem
+        ut!
+        Maxime deleniti vero suscipit. Distinctio, voluptas sunt neque perspiciatis fugiat sequi esse similique ratione
+        ullam vitae labore impedit animi, eveniet adipisci voluptatem quis qui! Beatae odit dicta officiis velit. Quae!
+        Necessitatibus, eligendi cum commodi quaerat at cumque doloremque vel aspernatur repudiandae illo unde excepturi
+        porro molestias in, magni earum asperiores dolorum distinctio. Adipisci tempora commodi quo quisquam architecto
+        cum nam!
+        Perspiciatis corporis facilis aut possimus debitis vitae est exercitationem tenetur dignissimos, neque dolores
+        in eaque praesentium, commodi ipsum sapiente magni nemo? Minima dolor magnam, optio aspernatur veniam facere
+        quidem officia?
+        Nobis aperiam natus, modi, nulla, voluptatibus deleniti quibusdam laudantium exercitationem velit soluta eos
+        fugiat eum amet optio at cum illum pariatur esse fugit corporis quas sed dolor a iure! Ratione!
+        Iusto saepe possimus neque illo! Voluptate rerum quas, dicta praesentium amet, fugiat placeat corrupti esse
+        laborum recusandae explicabo facere unde eligendi ipsa eius tenetur sapiente quisquam exercitationem.
+        Voluptatem, mollitia vel?
+        Voluptatem deserunt necessitatibus explicabo, natus vero architecto exercitationem fugiat voluptatibus omnis
+        voluptate perspiciatis porro ipsum alias dolore dignissimos molestiae? Dolores eos praesentium sed tempora aut
+        maiores ex iure delectus voluptate.
+        Ea maiores expedita natus minus earum, obcaecati sequi vitae, nihil repellendus omnis nobis impedit consequatur
+        totam itaque. Praesentium rerum iure quidem quo, similique, odit explicabo dolorum rem earum obcaecati velit?
+    </p>
+    <script src="app.js"></script>
+</body>
+<style>
+    body.dark-mode {
+        background-color: black;
+        color: white;
+    }
+</style>
+<script>
+    //Everything in local storage is treated as strings, whether it's number, string, boolean or object
+    //it is all going to be turned into the strings.
+    const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    localStorage.setItem('numbers', nums)
+    console.log(localStorage.getItem('numbers')) //1,2,3,4,5,6,7,8,9
+
+    //we need to store it like this
+    localStorage.setItem('new-number', JSON.stringify(nums))
+    console.log(JSON.parse(localStorage.getItem('new-number'))) //1,2,3,4,5,6,7,8,9
+
+    //localStorage should only be used to store non-sensitive data,
+    //passwords, any personal data,nothing that should be compromised if there's a cross site scripting
+
+
+    //If I' m changing something in local storage, you know, I'm change theme in website
+    //suppose if i want to keep those tabs in sync
+    //they will not stay in sync by default unless I refresh the page if I'm changing something 
+    //To make two tabs in sync there is special event we can listen to called a storage event
+
+    //The storage event of the Window interface fires when a storage area (localStorage or sessionStorage) has been modified in the context of another document.
+    window.addEventListener('storage', e => {
+        console.log("triggered")
+        applySavedTheme()
+    })
+    const toggleButton = document.querySelector("#toggleMode");
+
+    const applySavedTheme = () => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark-mode");
+            toggleButton.textContent = "Enable Light Mode";
+        } else {
+            document.body.classList.remove("dark-mode");
+            toggleButton.textContent = "Enable Dark Mode";
+        }
+    };
+    applySavedTheme();
+
+    const toggleTheme = () => {
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "light");
+            document.body.classList.remove("dark-mode");
+            toggleButton.textContent = "Enable Dark Mode";
+        } else {
+            localStorage.setItem("theme", "dark");
+            document.body.classList.add("dark-mode");
+            toggleButton.textContent = "Enable Light Mode";
+        }
+    };
+    toggleButton.addEventListener("click", toggleTheme);
+
+
+</script>
+
+</html>

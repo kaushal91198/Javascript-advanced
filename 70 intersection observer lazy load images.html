@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy Loading Images</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <img class="lazy" alt="An image" data-src="livegroom.png">
+    <img class="lazy" alt="An image" data-src="kitchen.png">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+    <img class="lazy" alt="An image">
+
+
+</body>
+<style>
+    img.lazy {
+        background: url("placeholder.png") no-repeat center center;
+        min-height: 400px;
+        display: block;
+    }
+</style>
+<script>
+    //If you have ever seen Airbnb blog website there might be 100 photos
+    //Instead of loading every single image at the begining and slowing down the initial page load with 100 different images, what they do is maybe load a handful, then they might load some real blurry versions that are kind of placeholders and then as they start to become visible, they will load and request the real image
+
+    //so we don't have to load potentially 100 images for the inital load
+
+    const images = document.querySelectorAll('img.lazy')
+    const observer = new IntersectionObserver(entires => {
+        entires.forEach((entry) => {
+            if (entry.isIntersecting) {
+                //image need to be loaded!!
+                console.log("Loading new random image")
+
+
+                //we can get the data-src dynamically by accessing target attributes
+                console.log(entry.target.attributes['data-src'], 'entry')
+                //then we can set the image src like this
+                // entry.target.src = entry.target.attributes['data-src']
+
+
+                entry.target.src = "https://source.unsplash.com/random"
+                observer.unobserve(entry.target)
+            }
+        })
+    })
+
+    images.forEach((img) => observer.observe(img))
+
+</script>
+
+</html>

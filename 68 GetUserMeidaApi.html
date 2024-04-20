@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetUserMedia Demo</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <button id="startStream">Start Video Stream</button>
+        <div id="errText"></div>
+        <video id="videoElement" width="640" height="480" autoplay></video>
+    </div>
+
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f7f7f7;
+    }
+
+    .container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    button {
+        margin: 10px;
+    }
+</style>
+<script>
+    //MediaStream (getUserMedia)
+    //access the user's camera and microphone
+    document.getElementById('startStream').addEventListener('click', async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            document.getElementById('videoElement').srcObject = stream;
+        } catch (error) {
+            console.log(error.message)
+            document.getElementById('errText').innerText = error.message
+        }
+    })
+
+
+    //To get list of cameras that you have access to o the browser has access to
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+        console.log(devices)
+    }).catch((e) => console.log(e))
+</script>
+
+</html>

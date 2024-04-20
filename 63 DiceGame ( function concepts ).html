@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dice.css">
+    <title>Die Game</title>
+</head>
+
+<body>
+    <div class="container">
+        <button id="rollBtn">Roll the Dice</button>
+        <div id="result">Roll the dice to see if you win!</div>
+    </div>
+
+</body>
+<!-- <script>
+
+    // imperative functional approach
+    class DiceGame {
+        constructor(rollBtnId, resultDisplayId) {
+            this.rollBtn = document.getElementById(rollBtnId);
+            this.resultDisplay = document.getElementById(resultDisplayId);
+
+            this.rollBtn.addEventListener("click", this.rollDice);
+        }
+
+        // Generate a random number between 1 and 6 (inclusive)
+        getRandomRoll() {
+            return Math.floor(Math.random() * 6) + 1;
+        }
+
+        // Check if the user won
+        checkWin(roll) {
+            return roll === 6;
+        }
+
+        // Bind the rollDice method to the click event
+        rollDice = () => {
+            const roll = this.getRandomRoll();
+
+            if (this.checkWin(roll)) {
+                this.resultDisplay.innerText = `You rolled a ${roll}! You win!`;
+            } else {
+                this.resultDisplay.innerText = `You rolled a ${roll}. Try again!`;
+            }
+        };
+    }
+
+    // Start the game by creating a new instance
+    new DiceGame("rollBtn", "result");
+
+</script> -->
+<!-- <script>
+    //functional programing approach
+    const getRandomRoll = () => Math.floor(Math.random() * 6) + 1
+    const checkWin = (roll) => roll === 6
+
+    const createDiceGame = (rollBtnId, resultDisplayId) => {
+        const rollBtn = document.getElementById(rollBtnId)
+        const resultDisplay = document.getElementById(resultDisplayId)
+        rollBtn.addEventListener('click', rollDiceAndDisplayResult(resultDisplay))
+    }
+
+    const displayResult = (element, message) => {
+        element.innerText = message
+    }
+
+    const rollDiceAndDisplayResult = (resultDisplay) => () => {
+        const roll = getRandomRoll()
+        const message = checkWin(roll) ? `You rolled a ${roll}! You win!` : `You rolled a ${roll}. Try again!`
+        displayResult(resultDisplay, message)
+    }
+    createDiceGame('rollBtn', 'result')
+</script> -->
+
+<script>
+    const partial =
+        (f, ...fixedArgs) =>
+            (...args) =>
+                f(...fixedArgs, ...args);
+
+    const compose = (...fns) =>
+        fns.reduceRight(
+            (a, b) =>
+                (...args) =>
+                    a(b(...args))
+        );
+
+    // DICE GAME CODE:
+    const getRandomRoll = () => Math.floor(Math.random() * 6) + 1;
+    const checkWin = (roll) => roll === 6;
+
+    const displayResult = (element, message) => {
+        element.innerText = message;
+    };
+
+    const createMessage = (roll) => {
+        return checkWin(roll)
+            ? `You rolled a ${roll}.  You win!`
+            : `You rolled a ${roll}.  Try again`;
+    };
+
+    const createDiceGame = (rollBtnId, resultDisplayId) => {
+        const showResult = partial(
+            displayResult,
+            document.getElementById(resultDisplayId)
+        );
+        const playGame = compose(getRandomRoll, createMessage, showResult);
+        document.getElementById(rollBtnId).addEventListener("click", playGame);
+    };
+
+    createDiceGame("rollBtn", "result");
+
+</script>
+<style>
+    body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    button {
+        font-size: 18px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        background-color: rgb(16, 160, 83);
+    }
+
+    div#result {
+        font-size: 20px;
+        color: #333;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+</html>

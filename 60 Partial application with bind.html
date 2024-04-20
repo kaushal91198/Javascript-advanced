@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //partial application
+    // the process of executing a function with some or all of its arguments. the partially applied function then gets returned for later use
+    function greet(greeting, name) {
+        console.log(`${greeting}, ${name}!!!`);
+    }
+
+    console.log(greet.bind(null, "Good day"));
+
+    //partial function
+    function partial(func, ...fixedArgs) {
+        return function (...remainingArgs) {
+            return func(...fixedArgs, ...remainingArgs);
+        };
+    }
+
+    const aussieGreet = partial(greet, "Good day");
+    const spiteGreet = partial(greet, "I hate you");
+
+    console.log(aussieGreet, "aussieGreet");
+    console.log(spiteGreet, "spiteGreet");
+
+    aussieGreet("kaushal");
+    spiteGreet("jion");
+
+    function fetchData(url, apiKey, params) {
+        const queryString = new URLSearchParams(params).toString();
+        const fullUrl = `${url}${queryString}`;
+        console.log(`sending request to ${fullUrl}`);
+        console.log(`with api key of ${apiKey}`);
+    }
+    const googleApiKey = "my-secret-api-google-key";
+    const googleUrl = "https://api.google.com/data";
+
+    const facebookApiKey = "my-secret-api-facebook-key";
+    const facebookUrl = "https://api.facebook.com/data";
+
+    const fetchGoogleApi = partial(fetchData, googleApiKey, googleUrl);
+    const fetchFacebookApi = partial(fetchData, facebookApiKey, facebookUrl);
+
+    fetchGoogleApi({ id: 1, filter: "google" });
+    fetchGoogleApi({ id: 2, filter: "facebook" });
+
+    //we might want only know certain values when functions are invoked or we want to pre bind values 
+
+    function calculateTax(rate, amount) {
+        const total = rate * amount
+        return total
+    }
+    const salesTax = partial(calculateTax, 90)
+    const incomeTax = partial(calculateTax, 100)
+
+    console.log(salesTax(25))
+    console.log(incomeTax(36))
+
+</script>
+
+</html>

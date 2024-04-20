@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16 closures with EventListener</title>
+</head>
+<body>
+    <button>Click me</button>
+    <button id="btn-1">Click me</button>
+    <button id="btn-2">Click me</button>
+    <button id="btn-3">Click me</button>
+
+</body>
+<script>
+document.querySelector('button').addEventListener("click",(function(){
+    let count = 0
+    return function(){
+        count +=1
+        console.log(`You clicked me ${count} times`)
+    }
+})())
+
+function createCounterButton(id){
+    const btn = document.getElementById(id)
+    let count = 0
+    btn.addEventListener('click',function(){
+        count +=1;
+        btn.innerText=`clicked ${count} times`
+    })
+}
+createCounterButton("btn-1")
+createCounterButton("btn-2")
+createCounterButton("btn-3")
+
+</script>
+</html>

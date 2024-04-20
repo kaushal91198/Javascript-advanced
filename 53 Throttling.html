@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Throttling</title>
+    <style>
+        .item {
+            padding: 20px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content"></div>
+
+</body>
+<script>
+    //Throttling is a technique used to make sure a function is called more one time within some duration
+    function getRandomColor() {
+        const palette = ['#2fb178', '#5a1aba', '#f8c362', '#2c4cb7', '#fb13ef', '#821fa5', '#681ae7', '#76e1a4', '#c6c8fb', '#294a94']
+        return palette[Math.floor(Math.random() * palette.length)]
+    }
+
+    const content = document.getElementById('content')
+
+    function loadMoreItems() {
+        const scrollDistanceToBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight
+        if (scrollDistanceToBottom < 200) {
+            console.log("Loading Data from api")
+            for (let i = 0; i < 10; i++) {
+                const item = document.createElement('div')
+                item.classList.add('item')
+                item.textContent = "Item" + (content.children.length + 1)
+                item.style.backgroundColor = getRandomColor()
+                content.appendChild(item)
+            }
+        }
+    }
+    let isThrottled = false
+    window.addEventListener('scroll', () => {
+        if (!isThrottled) {
+            loadMoreItems()
+            isThrottled = true
+            setTimeout(() => {
+                isThrottled = false
+            }, 300);
+        }
+    })
+
+    //Initial load
+    loadMoreItems()
+</script>
+
+</html>
